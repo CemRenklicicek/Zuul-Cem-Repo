@@ -96,6 +96,9 @@ class Game
 			case "go":
 				GoRoom(command);
 				break;
+			case "look":
+				PrintLook(command);
+				break;
 			case "quit":
 				wantToQuit = true;
 				break;
@@ -119,6 +122,12 @@ class Game
 		parser.PrintValidCommands();
 	}
 
+	private void PrintLook()
+	{
+				Console.WriteLine(currentRoom.GetLongDescription());
+	}
+
+		
 	// Try to go to one direction. If there is an exit, enter the new
 	// room, otherwise print an error message.
 	private void GoRoom(Command command)
@@ -144,3 +153,4 @@ class Game
 		Console.WriteLine(currentRoom.GetLongDescription());
 	}
 }
+
