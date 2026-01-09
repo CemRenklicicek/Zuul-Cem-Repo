@@ -22,11 +22,16 @@ class Game
 		Room pub = new Room("in the campus pub");
 		Room lab = new Room("in a computing lab");
 		Room office = new Room("in the computing admin office");
+		Room cafetaria = new Room("in the cafetaria");
+		Room playground = new Room("in the indoor playground");
+		Room library = new Room("in the big library");
+		Room hallway = new Room("in the main hall");
 
 		// Initialise room exits
 		outside.AddExit("east", theatre);
 		outside.AddExit("south", lab);
 		outside.AddExit("west", pub);
+		outside.AddExit("north", hallway);
 
 		theatre.AddExit("west", outside);
 
@@ -36,6 +41,12 @@ class Game
 		lab.AddExit("east", office);
 
 		office.AddExit("west", lab);
+
+		cafetaria.AddExit("up", outside);
+
+		playground.AddExit("down", outside);
+
+		library.AddExit("up", hallway);
 
 		// Create your Items here
 		// ...
@@ -122,7 +133,7 @@ class Game
 		parser.PrintValidCommands();
 	}
 
-	private void PrintLook()
+	private void PrintLook(Command command)
 	{
 				Console.WriteLine(currentRoom.GetLongDescription());
 	}
@@ -153,4 +164,5 @@ class Game
 		Console.WriteLine(currentRoom.GetLongDescription());
 	}
 }
+
 
