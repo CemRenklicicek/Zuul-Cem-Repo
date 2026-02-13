@@ -14,6 +14,14 @@ class CommandLibrary
 		validCommands.Add("go");
 		validCommands.Add("quit");
 		validCommands.Add("look");
+		validCommands.Add("status");
+		validCommands.Add("restart");
+		validCommands.Add("take");
+		validCommands.Add("drop");
+		validCommands.Add("open");
+		validCommands.Add("use");
+		validCommands.Add("talk");
+
 	}
 
 	// Check whether a given string is a valid command word.
@@ -29,4 +37,3 @@ class CommandLibrary
 		return String.Join(", ", validCommands);
 	}
 }
-
