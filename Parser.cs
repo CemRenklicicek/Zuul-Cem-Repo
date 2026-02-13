@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 class Parser
 {
@@ -19,13 +20,21 @@ class Parser
 		string word1 = null;
 		string word2 = null;
 
-		// string.Split() returns an array
-		string[] words = Console.ReadLine().Split(' ');
-		if (words.Length > 0) { word1 = words[0]; }
-		if (words.Length > 1) { word2 = words[1]; }
+
+string input = Console.ReadLine()?.Trim();
+if (string.IsNullOrEmpty(input)) return new Command(null, null);
+
+string[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+if (words.Length > 0) word1 = words [0].ToLower();
+if (words.Length > 1)
+		{
+			word2 = string.Join(" ", words.Skip(1)).ToLower();
+		}
 
 		// Now check whether this word is known. If so, create a command with it.
-		if (commandLibrary.IsValidCommandWord(word1)) {
+		if (commandLibrary.IsValidCommandWord(word1))
+		 {
 			return new Command(word1, word2);
 		}
 
@@ -36,7 +45,12 @@ class Parser
 	// Prints a list of valid command words from commandLibrary.
 	public void PrintValidCommands()
 	{
-		Console.WriteLine("Your command words are:");
+		Console.WriteLine("Use one of those commands to progress.");
+		Console.WriteLine();
+		Console.WriteLine("Examples: Type 'go' with a direction you like to take.");
+		Console.WriteLine("Or type 'use', 'take', or 'drop' to do something with an item.");
+		Console.WriteLine();
 		Console.WriteLine(commandLibrary.GetCommandsString());
+		Console.WriteLine();
 	}
 }
