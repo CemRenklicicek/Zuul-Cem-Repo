@@ -40,16 +40,14 @@ public bool Remove(Item item)
         if (item == null) return false;
 
         string key = item.Name.ToLower();
-        return items.Remove(item.Name);
+        return items.Remove(key);
     }
 
 public Item Get(string name)
 {
 
-if (string.IsNullOrWhiteSpace(name)) 
-return null;
-
-items.TryGetValue(name, out Item item);
+if (string.IsNullOrWhiteSpace(name)) return null;
+items.TryGetValue(name.ToLower(), out Item item);
 return item;
 
 }
