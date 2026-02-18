@@ -67,7 +67,6 @@ Chest = null;
 public void GetLongDescriptionWithExits()
 {
 
-Console.WriteLine();
 Console.Write("You are in ");
 Console.ForegroundColor = ConsoleColor.Cyan;
 Console.WriteLine(this.Description);
@@ -76,7 +75,7 @@ Console.ResetColor();
 if (Chest != null)
 		{
 			Console.ForegroundColor = ConsoleColor.DarkYellow;
-			Console.WriteLine("\nThere is a chest here.");
+			Console.WriteLine("\nThere is a chest here");
 			Console.ResetColor();
 		}
 
@@ -92,7 +91,7 @@ if (Chest != null)
 				Console.Write(" - " + item.Description);
 				Console.ResetColor();
 				if (!string.IsNullOrWhiteSpace(item.ShortDescription))
-				Console.WriteLine($" ({item.ShortDescription})");
+				Console.WriteLine();
 				else
 				Console.WriteLine();
 			}
