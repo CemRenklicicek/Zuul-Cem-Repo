@@ -12,6 +12,8 @@ class Game
 
 	private bool coinGiven = false;
 
+	private bool playerDied = false;
+
 	private int restartCount = 0;
 
 
@@ -94,13 +96,14 @@ CreateRooms();
 
 
 Item emerald = new Item(3, "emerald", "a beautiful green emerald");
-Item orange = new Item(1, "orange", "a orange", 2, 8);
+Item orange = new Item(1, "orange", "a orange", 2, 10);
 Item beer = new Item(2, "beer", "a glass of beer", 1, 10);
-Item burger = new Item(1, "burger", "a fresh hamburger", 1, 10);
+Item burger = new Item(1, "burger", "a fresh hamburger", 1, 15);
+Item milkshake = new Item(2, "milkshake", "a strawberry milkshake", 5, 15);
 Item armour = new Item(7, "armor", "some protective armour");
 Item potion = new Item(1, "potion", "a energy potion", 6, 25);
-Item popcorn = new Item(2, "popcorn", "a bag of popcorn", 3, 10);
-Item cookie = new Item(1, "cookie", "a chocolate chip cookie", 2, 5);
+Item popcorn = new Item(2, "popcorn", "a bag of popcorn", 3, 15);
+Item cookie = new Item(1, "cookie", "a chocolate chip cookie", 2, 7);
 Item painting = new Item(5, "painting", "a painting of Van Gogh");
 Item recordPlayer = new Item(7, "record player", "an old record player. Maybe you can play a record on it", false);
 
@@ -121,6 +124,7 @@ theatre.AddItem(popcorn);
 hallway.AddItem(painting);
 lab.AddItem(potion);
 pub.AddItem(beer);
+pub.AddItem(milkshake);
 theatre.AddItem(cookie);
 suite.AddItem(recordPlayer);
 
@@ -205,7 +209,7 @@ if (gameWon)
 		}
 	    else
 		{
-			Console.WriteLine("You have already won! Type restart to play again, or enter to quit.");
+			Console.WriteLine("You've won! Type restart to play again, or enter to quit");
 			Console.WriteLine();
             continue;
 		}	
@@ -248,7 +252,8 @@ if (command.CommandWord == "restart")
 			{
 				Console.WriteLine("You've explored long enough. Time to go elsewhere");
 				Console.WriteLine("Type restart or quit whether you want to return or leave (restart/quit)");
-				gameWon = true;
+				Console.WriteLine();
+				playerDied = true;
 
 				continue;
 
@@ -362,6 +367,7 @@ if (command.CommandWord == "restart")
 
 	{
 		Console.WriteLine(player.GetInventory());
+		Console.WriteLine();
 		Console.ForegroundColor = ConsoleColor.Green;
 		Console.WriteLine($"Your status right now is {player.health}");
 		Console.WriteLine();
@@ -484,7 +490,7 @@ private void Drop(Command command)
 
 		player.CurrentRoom = nextRoom;
 		player.CurrentRoom.Visited = true;
-		player.Damage(8);
+		player.Damage(11);
 		Console.ForegroundColor = ConsoleColor.Green;
 	    Console.WriteLine($"Your stamina is now at {player.health}");
 		Console.ResetColor();
@@ -613,7 +619,7 @@ if (item == null)
 if (item.Name == "beer")
 		{
 			Console.WriteLine("You drink a big sip of beer. It tastes yucky");
-			player.Damage(13);
+			player.Damage(15);
 			Console.WriteLine($"Your stamina has been drained and is now {player.health}");
 			Console.WriteLine();
 			player.RemoveItem("beer");
@@ -651,7 +657,6 @@ if (item.IsConsumable())
 
 			if (effect >= 0)
 			{
-				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine($"You have consumed the {item.Name}. You recovered {effect}% stamina");
 				Console.ResetColor();
 				Console.WriteLine();
@@ -710,7 +715,12 @@ switch (current.Description.ToLower())
 		{
 			case "the hotel's main lobby":
 			Console.WriteLine("You toss the tiny coin into the fountain in the lobby");
-			Console.WriteLine("You feel slightly refreshed and now have 5% {player.health}");
+			Console.WriteLine($"You feel slightly refreshed and recieved 5% stamina");
+			Console.WriteLine();
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine($"Your stamina is now {player.health}");
+			Console.ResetColor();
+
 			Console.WriteLine();
 			player.Heal(10);
 			break;
@@ -718,11 +728,10 @@ switch (current.Description.ToLower())
 
 			case "the hotel library":
 			Console.WriteLine("You toss the coin and it lands on an old book. A secret passage opens");
-			Console.WriteLine();
 			Room secretRoom = current.GetExit("zula");
 			if (secretRoom != null)
 				{
-					Console.WriteLine("Type zula to enter the passage");
+					Console.WriteLine("Type 'go zula' to enter the passage");
 					Console.WriteLine();
 				}
 				break;
@@ -782,6 +791,23 @@ string[] lobbyStartMessages =
 
 		}
 
+		
+
+else if (playerDied)
+		{
+			string[] deathRestartMessages =
+			{
+				"You return, but the hotel looks like it didn't forgot you",
+				"You feel like something dragged you back",
+				"You look at the same group of images again. That means you're back at the same place",
+				"You've missed out on something. Can you find it now?",
+			};
+
+Console.WriteLine(deathRestartMessages[rand.Next(deathRestartMessages.Length)]);
+Console.WriteLine();
+
+		}
+
 		else
 
 		{
@@ -800,6 +826,7 @@ string[] lobbyStartMessages =
 		Console.WriteLine();
 		}
 	
+
 
 		Console.Write("Restarting");
 		for (int i = 0; i < 6; i++)
@@ -828,6 +855,7 @@ if (previousRoom != "the hotel's main lobby" && !coinGiven)
 		player.CurrentRoom.GetLongDescriptionWithExits();
 
 		gameWon = false;
+		playerDied = false;
 	
 
 	}
@@ -898,7 +926,7 @@ private void RandomHotelEvent()
 		};
 
 Random rand = new Random();
-if (rand.Next(0, 5) == 0)
+if (rand.Next(0, 2) == 0)
 		{
 			Console.ForegroundColor = ConsoleColor.Gray;
 			Console.WriteLine(events[rand.Next(events.Length)]);
