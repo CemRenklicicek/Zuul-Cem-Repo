@@ -13,6 +13,7 @@ public class Item
 
 
     public int Uses { get; private set; }
+
     public int HealAmount { get; private set; }
 
     public Item(int weight, string name, string description, bool isCarryable = true)
